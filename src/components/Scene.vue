@@ -183,5 +183,6 @@ export default {
   top: 0;
   left: 0;
   width: 800px;
+  pointer-events: none;
 }
 </style>
