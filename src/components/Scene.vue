@@ -38,7 +38,7 @@ export default {
       const material = new Three.MeshStandardMaterial();
       material.roughness = 0.2;
       material.metalness = 0.7;
-      material.color = new Three.Color("#ff5353");
+      material.color = new Three.Color("#000000");
       material.normalMap = normalTexture;
 
       // Mesh
@@ -51,6 +51,11 @@ export default {
       this.pointLight.position.y = 3;
       this.pointLight.position.z = 4;
       this.scene.add(this.pointLight);
+
+      this.pointLight2 = new Three.PointLight(0x0000ff, 2);
+      this.pointLight2.position.set(1, 1, 1);
+      this.pointLight2.intensity = 1;
+      this.scene.add(this.pointLight2);
 
       // Camera
       this.camera = new Three.PerspectiveCamera(
