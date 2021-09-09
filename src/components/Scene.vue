@@ -1,5 +1,8 @@
 <template>
-  <div id="container" @mousemove="onMouseMove"></div>
+  <div>
+    <div id="container" @mousemove="onMouseMove"></div>
+    <div class="scene-text">THREE.JS</div>
+  </div>
 </template>
 
 <script>
@@ -167,6 +170,18 @@ export default {
   width: 800px;
   height: 500px;
   color: #ff5353;
-  background-color: rgb(71, 71, 71);
+  background-color: rgb(39, 39, 39);
+}
+.scene-text {
+  font-size: 80px;
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+  height: 500px;
+  line-height: 500px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 800px;
 }
 </style>
