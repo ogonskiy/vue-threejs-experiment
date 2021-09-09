@@ -1,5 +1,5 @@
 <template>
-  <div id="container"></div>
+  <div id="container" @mousemove="onMouseMove"></div>
 </template>
 
 <script>
@@ -7,20 +7,29 @@ import * as Three from "three";
 import * as dat from "dat.gui";
 const normalMapURL = require("../assets/textures/golf-ball-normal-map.png");
 
+const clock = new Three.Clock();
+
 export default {
   name: "Scene",
   data() {
     return {
+      container: null,
       camera: null,
       scene: null,
       renderer: null,
       mesh: null,
       pointLight: null,
       textureLoader: null,
+      interact: {
+        mouseX: 0,
+        mouseY: 0,
+        targetX: 0,
+        targetY: 0,
+      },
     };
   },
   methods: {
-    init: function () {
+    init() {
       // Debug
 
       const gui = new dat.GUI();
@@ -30,7 +39,7 @@ export default {
       const normalTexture = this.textureLoader.load(normalMapURL);
 
       // Canvas wrapper
-      const container = document.getElementById("container");
+      this.container = document.getElementById("container");
 
       // Scene
       this.scene = new Three.Scene();
@@ -68,11 +77,11 @@ export default {
       light1.add(this.pointLight2.position, "z").min(-3).max(3).step(0.01);
       light1.add(this.pointLight2, "intensity").min(0).max(10).step(0.01);
 
-      const pointLightHelper = new Three.PointLightHelper(
-        this.pointLight2,
-        0.5
-      );
-      this.scene.add(pointLightHelper);
+      // const pointLightHelper = new Three.PointLightHelper(
+      //   this.pointLight2,
+      //   0.5
+      // );
+      // this.scene.add(pointLightHelper);
 
       this.pointLight3 = new Three.PointLight(0xff0000, 2);
       this.pointLight3.position.set(-1.05, -1.24, 0.31);
@@ -93,16 +102,16 @@ export default {
         this.pointLight3.color.set(light2Color.color);
       });
 
-      const pointLightHelper2 = new Three.PointLightHelper(
-        this.pointLight3,
-        0.5
-      );
-      this.scene.add(pointLightHelper2);
+      // const pointLightHelper2 = new Three.PointLightHelper(
+      //   this.pointLight3,
+      //   0.5
+      // );
+      // this.scene.add(pointLightHelper2);
 
       // Camera
       this.camera = new Three.PerspectiveCamera(
         75,
-        container.clientWidth / container.clientHeight,
+        this.container.clientWidth / this.container.clientHeight,
         0.1,
         100
       );
@@ -113,16 +122,36 @@ export default {
 
       // Renderer
       this.renderer = new Three.WebGLRenderer({ antialias: true, alpha: true });
-      this.renderer.setSize(container.clientWidth, container.clientHeight);
+      this.renderer.setSize(
+        this.container.clientWidth,
+        this.container.clientHeight
+      );
 
-      container.appendChild(this.renderer.domElement);
+      this.container.appendChild(this.renderer.domElement);
     },
-    animate: function () {
+    animate() {
       // this.mesh.rotation.z += 0.01;
       // this.mesh.rotation.x += 0.01;
-      this.mesh.rotation.y += 0.005;
+      this.interact.targetX = this.interact.mouseX * 0.001;
+      this.interact.targetY = this.interact.mouseY * 0.001;
+
+      this.mesh.rotation.y = 0.5 * clock.getElapsedTime();
+      this.mesh.rotation.y +=
+        0.5 * (this.interact.targetX - this.mesh.rotation.y);
+      this.mesh.rotation.x +=
+        0.5 * (this.interact.targetY - this.mesh.rotation.x);
+      this.mesh.rotation.z +=
+        0.5 * (this.interact.targetY - this.mesh.rotation.z);
+
       this.renderer.render(this.scene, this.camera);
       requestAnimationFrame(this.animate);
+    },
+    onMouseMove(e) {
+      const sceneHalfX = window.innerWidth / 2;
+      const sceneHalfY = window.innerHeight / 2;
+
+      this.interact.mouseX = e.clientX - sceneHalfX;
+      this.interact.mouseY = e.clientY - sceneHalfY;
     },
   },
   mounted() {
