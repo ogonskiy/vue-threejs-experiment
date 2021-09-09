@@ -4,6 +4,7 @@
 
 <script>
 import * as Three from "three";
+const normalMapURL = require("../assets/textures/golf-ball-normal-map.png");
 
 export default {
   name: "Scene",
@@ -14,10 +15,15 @@ export default {
       renderer: null,
       mesh: null,
       pointLight: null,
+      textureLoader: null,
     };
   },
   methods: {
     init: function () {
+      // Loading
+      this.textureLoader = new Three.TextureLoader();
+      const normalTexture = this.textureLoader.load(normalMapURL);
+
       // Canvas wrapper
       const container = document.getElementById("container");
 
@@ -33,6 +39,7 @@ export default {
       material.roughness = 0.2;
       material.metalness = 0.7;
       material.color = new Three.Color("#ff5353");
+      material.normalMap = normalTexture;
 
       // Mesh
       this.mesh = new Three.Mesh(geometry, material);
@@ -64,8 +71,9 @@ export default {
       container.appendChild(this.renderer.domElement);
     },
     animate: function () {
-      this.mesh.rotation.x += 0.01;
-      this.mesh.rotation.y += 0.03;
+      // this.mesh.rotation.z += 0.01;
+      // this.mesh.rotation.x += 0.01;
+      this.mesh.rotation.y += 0.005;
       this.renderer.render(this.scene, this.camera);
       requestAnimationFrame(this.animate);
     },
