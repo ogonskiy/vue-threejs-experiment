@@ -85,6 +85,14 @@ export default {
       light2.add(this.pointLight3.position, "z").min(-3).max(3).step(0.01);
       light2.add(this.pointLight3, "intensity").min(0).max(10).step(0.01);
 
+      const light2Color = {
+        color: "#ff0000",
+      };
+
+      light2.addColor(light2Color, "color").onChange(() => {
+        this.pointLight3.color.set(light2Color.color);
+      });
+
       const pointLightHelper2 = new Three.PointLightHelper(
         this.pointLight3,
         0.5
