@@ -58,20 +58,36 @@ export default {
       this.scene.add(this.pointLight);
 
       this.pointLight2 = new Three.PointLight(0x0000ff, 2);
-      this.pointLight2.position.set(1, 1, 1);
-      this.pointLight2.intensity = 1;
+      this.pointLight2.position.set(1, 1, 0.33);
+      this.pointLight2.intensity = 10;
       this.scene.add(this.pointLight2);
 
-      gui.add(this.pointLight2.position, "y").min(-3).max(3).step(0.01);
       gui.add(this.pointLight2.position, "x").min(-6).max(6).step(0.01);
+      gui.add(this.pointLight2.position, "y").min(-3).max(3).step(0.01);
       gui.add(this.pointLight2.position, "z").min(-3).max(3).step(0.01);
-      gui.add(this.pointLight2, "intensity").min(0).max(1).step(0.01);
+      gui.add(this.pointLight2, "intensity").min(0).max(10).step(0.01);
 
       const pointLightHelper = new Three.PointLightHelper(
         this.pointLight2,
         0.5
       );
       this.scene.add(pointLightHelper);
+
+      this.pointLight3 = new Three.PointLight(0xff0000, 2);
+      this.pointLight3.position.set(-1.05, -1.24, 0.31);
+      this.pointLight3.intensity = 3.25;
+      this.scene.add(this.pointLight3);
+
+      gui.add(this.pointLight3.position, "x").min(-6).max(6).step(0.01);
+      gui.add(this.pointLight3.position, "y").min(-3).max(3).step(0.01);
+      gui.add(this.pointLight3.position, "z").min(-3).max(3).step(0.01);
+      gui.add(this.pointLight3, "intensity").min(0).max(10).step(0.01);
+
+      const pointLightHelper2 = new Three.PointLightHelper(
+        this.pointLight3,
+        0.5
+      );
+      this.scene.add(pointLightHelper2);
 
       // Camera
       this.camera = new Three.PerspectiveCamera(
