@@ -4,6 +4,7 @@
 
 <script>
 import * as Three from "three";
+import * as dat from "dat.gui";
 const normalMapURL = require("../assets/textures/golf-ball-normal-map.png");
 
 export default {
@@ -20,6 +21,10 @@ export default {
   },
   methods: {
     init: function () {
+      // Debug
+
+      const gui = new dat.GUI();
+
       // Loading
       this.textureLoader = new Three.TextureLoader();
       const normalTexture = this.textureLoader.load(normalMapURL);
@@ -57,9 +62,20 @@ export default {
       this.pointLight2.intensity = 1;
       this.scene.add(this.pointLight2);
 
+      gui.add(this.pointLight2.position, "y").min(-3).max(3).step(0.01);
+      gui.add(this.pointLight2.position, "x").min(-6).max(6).step(0.01);
+      gui.add(this.pointLight2.position, "z").min(-3).max(3).step(0.01);
+      gui.add(this.pointLight2, "intensity").min(0).max(1).step(0.01);
+
+      const pointLightHelper = new Three.PointLightHelper(
+        this.pointLight2,
+        0.5
+      );
+      this.scene.add(pointLightHelper);
+
       // Camera
       this.camera = new Three.PerspectiveCamera(
-        70,
+        75,
         container.clientWidth / container.clientHeight,
         0.1,
         100
